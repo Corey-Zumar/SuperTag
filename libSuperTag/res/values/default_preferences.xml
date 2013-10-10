@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="default_preferences">
+        <item>event, com.google.android.calendar, Google Calendar, com.google.android.apps.maps, Google Maps</item>
+        <item>phoneCall, none, Dialer</item>
+        <item>googleSearch, none, Web Browser, com.twitter.android, Twitter</item>
+        <item>location, com.google.android.apps.maps, Google Maps, com.google.android.apps.maps, Google Maps</item>
+        <item>food, com.yelp.android, Yelp</item>
+        <item>videoMedia, com.google.android.youtube, YouTube</item>
+        <item>musicMedia, com.google.android.youtube, YouTube</item>
+        <item>application, com.android.vending, Google Play Store</item>
+        <item>movieMedia, com.imdb.Mobile, IMDB</item>
+        <item>newsMedia, com.huffingtonpost.android, The Huffington Post</item>
+        <item>stocks, com.google.android.apps.finance, Google Finance</item>
+        <item>shopping, com.amazon.mShop.android, Amazon Mobile</item>
+    </string-array>
+    
+</resources>

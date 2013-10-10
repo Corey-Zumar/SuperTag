@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ignoredSmilies">
+        <item>:)</item>
+        <item>(:</item>
+        <item>:-</item>
+        <item>-:</item>
+        <item>:p</item>
+        <item>:d</item>
+        <item>:|</item>
+        <item>|:</item>
+    </string-array>
+    
+</resources>

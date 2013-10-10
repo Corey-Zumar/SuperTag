@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="classes">
+        <item>com.spotify.mobile.android.ui, com.spotify.mobile.android.ui.activity.MainActivity</item>
+        <item>com.yelp.android, com.yelp.android.ui.activities.ActivityHome</item>
+        <item>com.android.vending, com.android.vending.AssetBrowserActivity</item>
+        <item>com.huffingtonpost.android, com.huffingtonpost.android.section.SectionActivity</item>
+        <item>org.npr.android.news, org.npr.android.news.SearchResultsActivity</item>
+        <item>com.fandango, com.fandango.activities.SearchListActivity</item>
+        <item>jp.co.asbit.pvstar, jp.co.asbit.pvstar.SearchActivity</item>
+        <item>com.amazon.mShop.android, com.amazon.mShop.search.SearchActivity</item>
+        <item>com.ebay.mobile, com.ebay.mobile.activities.QuickSearchHandler</item>
+    </string-array>
+    
+</resources>

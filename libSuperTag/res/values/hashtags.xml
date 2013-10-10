@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hashTags">
+        <item>#google, googleSearch</item>
+        <item>#search, googleSearch</item>
+        
+        <item>#call, phoneCall</item>
+        <item>#dial, phoneCall</item>
+        <item>#phone, phoneCall</item>
+        
+        <item>#map, location</item>
+        <item>#maps, location</item>
+        <item>#address, location</item>
+        <item>#location, location</item>
+        <item>#at, location</item>
+		<item>#to, location</item>
+        <item>#place, location</item>
+        
+        <item>#restaurant, food</item>
+        <item>#eat, food</item>
+        <item>#cafe, food</item>
+        <item>#food, food</item>
+        
+        <item>#vid, videoMedia</item>
+        <item>#video, videoMedia</item>
+        
+        <item>#music, musicMedia</item>
+        <item>#song, musicMedia</item>
+        <item>#artist, musicMedia</item>
+        <item>#track, musicMedia</item>
+        <item>#album, musicMedia</item>
+        
+        <item>#app, application</item>
+        <item>#application, application</item>
+        
+        <item>#movie, movieMedia</item>
+        <item>#film, movieMedia</item>
+        
+        <item>#article, newsMedia</item>
+        <item>#news, newsMedia</item>
+        <item>#story, newsMedia</item>
+        
+        <item>#stock, stocks</item>
+        <item>#stocks, stocks</item>
+        
+        <item>#shop, shopping</item>
+        <item>#shopping, shopping</item>
+        <item>#product, shopping</item>
+        <item>#item, shopping</item>
+        <item>#buy, shopping</item>
+        <item>#order, shopping</item>
+        
+        <item>#event, event</item>
+        <item>#party, event</item>
+        
+        <item>#time, eventComponent</item>
+        <item>#begins, eventComponent</item>
+        <item>#starttime, eventComponent</item>
+        <item>#start, eventComponent</item>
+        <item>#starts, eventComponent</item>
+        <item>#when, eventComponent</item>
+        <item>#endsat, eventComponent</item>
+        <item>#endtime, eventComponent</item>
+        <item>#ends, eventComponent</item>
+        <item>#end, eventComponent</item>
+        
+        
+    </string-array>
+</resources>
