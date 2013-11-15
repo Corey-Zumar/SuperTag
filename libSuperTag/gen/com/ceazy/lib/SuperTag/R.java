@@ -9,14 +9,14 @@ package com.ceazy.lib.SuperTag;
 
 public final class R {
     public static final class array {
-        public static int classes=0x7f040003;
-        public static int default_preferences=0x7f040004;
-        public static int directionAbbrevs=0x7f040001;
-        public static int hashTags=0x7f040005;
-        public static int ignoredSmilies=0x7f040007;
-        public static int ignored_tags_array=0x7f040006;
-        public static int locationAbbrevs=0x7f040000;
-        public static int titleAbbrevs=0x7f040002;
+        public static int classes=0x7f050003;
+        public static int default_preferences=0x7f050004;
+        public static int directionAbbrevs=0x7f050001;
+        public static int hashTags=0x7f050005;
+        public static int ignoredSmilies=0x7f050007;
+        public static int ignored_tags_array=0x7f050006;
+        public static int locationAbbrevs=0x7f050000;
+        public static int miscAbbrevs=0x7f050002;
     }
     public static final class attr {
     }
@@ -24,17 +24,38 @@ public final class R {
         public static int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static int ivIcon=0x7f070000;
-        public static int tvLabel=0x7f070001;
+        public static int ivIcon=0x7f080000;
+        public static int lvOptions=0x7f080005;
+        public static int tvInstructions=0x7f080004;
+        public static int tvLabel=0x7f080001;
+        public static int tvMsgBody=0x7f080008;
+        public static int tvMsgTitleText=0x7f080007;
+        public static int tvTitleText=0x7f080003;
+        public static int vMsgTitle=0x7f080006;
+        public static int vTitle=0x7f080002;
     }
     public static final class layout {
         public static int chooser_layout=0x7f030000;
+        public static int dialog_layout=0x7f030001;
+        public static int msg_layout=0x7f030002;
+    }
+    public static final class raw {
+        public static int bariol_regular=0x7f040000;
     }
     public static final class string {
-        public static int app_name=0x7f050000;
+        public static int app_name=0x7f060000;
     }
     public static final class style {
         /** 
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    
+
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        
+
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     
@@ -46,6 +67,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static int AppBaseTheme=0x7f060000;
+        public static int AppBaseTheme=0x7f070000;
+        /**  Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+         */
+        public static int AppTheme=0x7f070001;
     }
 }

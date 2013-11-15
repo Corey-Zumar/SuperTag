@@ -22,6 +22,15 @@ public class DataParser {
 		return resources;
 	}
 	
+	protected String getFunctionForHashTag(String hashTag, List<String> hashTags, List<String> functions) {
+		for(String tag : hashTags) {
+			if(tag.equals(hashTag)) {
+				return functions.get(hashTags.indexOf(tag)).trim();
+			}
+		}
+		return "googleSearch";
+	}
+	
 	protected String[] getTagsAndFunctionsArray() {
 		return getResources().getStringArray(R.array.hashTags);
 	}

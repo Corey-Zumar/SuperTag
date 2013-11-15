@@ -29,11 +29,8 @@ class AdManager {
 	}
 	
 	private void showSuperTagAd() {
-		AlertDialog d = new AlertDialog.Builder(getContext())
-		.setTitle("Download SuperTag!")
-		.setMessage("Please download the SuperTag application")
-		.create();
-		d.show();
+		DialogCreator dialogCreator = new DialogCreator(getContext());
+		dialogCreator.createSuperTagAdDialog().show();
 	}
 
 }

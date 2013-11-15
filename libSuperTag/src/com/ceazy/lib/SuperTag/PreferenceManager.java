@@ -6,13 +6,17 @@ import java.util.List;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.drawable.Drawable;
 
 class PreferenceManager {
 	
 	Context context;
+	PackageManager pManager;
 	
 	protected PreferenceManager(Context context) {
 		setContext(context);
+		pManager = getContext().getPackageManager();
 	}
 	
 	private void setContext(Context context) {
@@ -24,7 +28,6 @@ class PreferenceManager {
 	}
 	
 	protected boolean superTagIsInstalled() {
-		PackageManager pManager = getContext().getPackageManager();
 		for(PackageInfo packageInfo : pManager.getInstalledPackages(0)) {
 			if(packageInfo.packageName.equals("com.ceazy.SuperTag")) {
 				return true;
@@ -34,16 +37,6 @@ class PreferenceManager {
 	}
 	
 	protected SuperPreference getPackagePreferences(String function) {
-		PreferenceManager prefManager = new PreferenceManager(getContext());
-		if(prefManager.superTagIsInstalled()) {
-			getSuperTagPreferences(function);
-		} else {
-			return getDefaultPreferences(function);
-		}
-		return null;
-	}
-	
-	protected SuperPreference getDefaultPreferences(String function) {
 		String[] defaultPrefs = getContext().getResources().getStringArray(R.array.default_preferences);
 		for(String prefString : defaultPrefs) {
 			int firstCommaIndex = prefString.indexOf(",");
@@ -55,11 +48,6 @@ class PreferenceManager {
 		return null;
 	}
 	
-	protected SuperPreference getSuperTagPreferences(String function) {
-		//Custom prefs, better ads, etc
-		return null;
-	}
-	
 	protected SuperPreference parsePreferenceData(String function, String data) {
 		List<String> preferenceData = new ArrayList<String>();
 		while(data.length() > 0) {
@@ -68,7 +56,7 @@ class PreferenceManager {
 				preferenceData.add(data.substring(0, commaIndex).trim());
 				data = data.substring(commaIndex + 1, data.length());
 			} else {
-				preferenceData.add(data);
+				preferenceData.add(data.trim());
 				data = "";
 			}
 		}

@@ -48,22 +48,7 @@
         <item>#product, shopping</item>
         <item>#item, shopping</item>
         <item>#buy, shopping</item>
-        <item>#order, shopping</item>
-        
-        <item>#event, event</item>
-        <item>#party, event</item>
-        
-        <item>#time, eventComponent</item>
-        <item>#begins, eventComponent</item>
-        <item>#starttime, eventComponent</item>
-        <item>#start, eventComponent</item>
-        <item>#starts, eventComponent</item>
-        <item>#when, eventComponent</item>
-        <item>#endsat, eventComponent</item>
-        <item>#endtime, eventComponent</item>
-        <item>#ends, eventComponent</item>
-        <item>#end, eventComponent</item>
-        
+        <item>#order, shopping</item>     
         
     </string-array>
 </resources>

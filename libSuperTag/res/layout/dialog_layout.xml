@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/vTitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FF4444" />
+
+    <TextView
+        android:id="@+id/tvTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="Super Tag"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+        android:typeface="monospace" />
+    
+    <TextView
+        android:id="@+id/tvInstructions"
+        android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/vTitle"
+		android:layout_marginTop="5dp"
+		android:layout_marginLeft="5dp"
+		android:textSize="20dp"
+		android:text="Choose a search option"/>
+
+    <ListView
+        android:id="@+id/lvOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvInstructions"
+        android:layout_marginTop="5dp" >
+    </ListView>
+
+</RelativeLayout>
