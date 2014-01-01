@@ -1,5 +1,7 @@
 package com.ceazy.lib.SuperTag;
 
+import android.content.Context;
+import android.os.Messenger;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -74,6 +76,13 @@ public class SuperTag implements Parcelable {
 	
 	public SuperIntent getIntent() {
 		return superIntent;
+	}
+	
+	public void getJSON(Context context, Messenger messenger, boolean returnObj) {
+		
+		JSONFetcher fetcher = new JSONFetcher(context, messenger, getFunction(), 
+				getHashPhrase(), returnObj);
+		fetcher.retrieveJSONInfo();
 	}
 
 	@Override

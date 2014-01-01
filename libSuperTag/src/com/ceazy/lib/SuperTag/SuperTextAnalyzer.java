@@ -42,7 +42,7 @@ public class SuperTextAnalyzer {
 		return msgBody.contains("#");
 	}
 	
-	public List<SuperTag> getAllTags(String msgBody) {
+	private List<SuperTag> getTags(String msgBody, boolean single) {
 		String originalMsgBody = msgBody;
 		List<SuperTag> tagsList = new ArrayList<SuperTag>();
 		msgBody = replaceData(new Pattern[]{pLocation, pMisc}, msgBody);
@@ -56,19 +56,39 @@ public class SuperTextAnalyzer {
 			if(group.contains(" ")) {
 				hashTag = group.substring(hashIndex, group.indexOf(" ")).trim();
 				function = dataParser.getFunctionForHashTag(hashTag, hashTags, functions);
-				hashPhrase = group.substring(group.indexOf(hashTag) + hashTag.length() + 1).trim();
+				if(function.equals("googleSearch")) {
+					hashPhrase = group.substring(group.indexOf(hashTag) + 1).trim();
+				} else {
+					hashPhrase = group.substring(group.indexOf(hashTag) + hashTag.length() + 1).trim();
+				}
 			} else {
 				hashTag = "#";
-				function = "googleSearch";
 				hashPhrase = group.substring(hashIndex + 1).trim();
+				if(hashPhrase.contains(" ")) {
+					function = "googleSearch";
+				} else {
+					hashPhrase = "#" + hashPhrase;
+					function = "twitterSearch";
+				}
 			}
 			SuperTag newTag = new SuperTag(hashTag, hashPhrase, function);
 			int startIndex = originalMsgBody.indexOf(group);
 			newTag.setStartIndex(startIndex);
 			newTag.setEndIndex(startIndex + group.length());
 			tagsList.add(newTag);
+			if(single) {
+				break;
+			}
 		}
 		return tagsList;
+	}
+	
+	public List<SuperTag> getAllTags(String msgBody) {
+		return getTags(msgBody, false);
+	}
+	
+	public SuperTag getSingleTag(String phrase) {
+		return getTags(phrase, true).get(0);
 	}
 	
 	private String replaceData(Pattern[] patterns, String text) {

@@ -1,102 +1,92 @@
 package com.ceazy.lib.SuperTag;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.app.PendingIntent.CanceledException;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.content.pm.ResolveInfo;
+import android.os.Messenger;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 
 public class SuperIntent implements Parcelable {
 	
-	private Intent mainAction, secondaryAction;
-	private SuperPreference preference;
+	List<Intent> intentsList;
 	
-	public SuperIntent(Intent mainAction, SuperPreference preference) {
-		setMainAction(mainAction);
-		setPreference(preference);
+	public SuperIntent(List<Intent> intentsList) {
+		this.intentsList = intentsList;
 	}
 	
 	protected SuperIntent(Parcel in) {
-		setMainAction((Intent) in.readParcelable(null));
-		setPreference((SuperPreference) in.readParcelable(SuperPreference.class.getClassLoader()));
-		if(in.dataAvail() > 0) {
-			setSecondaryAction((Intent) in.readParcelable(null));
+		this.intentsList = in.readArrayList((new ArrayList<Intent>())
+				.getClass().getClassLoader());
+	}
+	
+	private List<Intent> getIntentsList() {
+		return intentsList;
+	}
+	
+	protected void performLaunch(Context context, Messenger destroyMessenger) {
+		List<Intent> intentsList = getIntentsList();
+		int size = intentsList.size();
+		if(size == 0) {
+			//Do nothing...
+		} else {
+			List<Intent> newIntents = new ArrayList<Intent>();
+			List<String> includedPkgs = new ArrayList<String>();
+			int index = 0;
+			int browserIndex = -1;
+			boolean include = false;
+			for(Intent intent : intentsList) {
+				List<ResolveInfo> resolvedList = context.getPackageManager()
+						.queryIntentActivities(intent, 0);
+				for(ResolveInfo info : resolvedList) {
+					String pkgName = info.activityInfo.packageName;
+					if(!pkgName.equals("com.android.browser") && !includedPkgs.contains(pkgName)) {
+						Intent intentCopy = new Intent(intent);
+						intentCopy.setPackage(pkgName);
+						newIntents.add(intentCopy);
+						includedPkgs.add(pkgName);
+						index += 1;
+					} else if(intent.getStringExtra("type") != null &&
+							pkgName.equals("com.android.browser")) {
+						Intent intentCopy = new Intent(intent);
+						intentCopy.setPackage(pkgName);
+						newIntents.add(intentCopy);
+						browserIndex = index;
+						index += 1;
+						if(intent.getStringExtra("include") != null) {
+							include = true;
+						}
+					}
+				}
+				
+			}
+			if(newIntents.size() > 1 && !include && browserIndex > -1) {
+				newIntents.remove(browserIndex);
+			}
+			Intent[] intents = new Intent[newIntents.size() - 1];
+			for(int i = 1; i < newIntents.size(); i++) {
+				intents[i-1] = newIntents.get(i);
+			}
+			Intent chooserIntent = Intent.createChooser(newIntents.get(0), "Choose an option...");
+			chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents);
+			try {
+				context.startActivity(chooserIntent);
+			} catch(ActivityNotFoundException e) {
+				//No apps installed error!
+			}
+			if(destroyMessenger != null) {
+				((Activity) context).finish();
+			}
 		}
 	}
-	
-	public void setMainAction(Intent mainAction) {
-		this.mainAction = mainAction;
-	}
-	
-	public void setSecondaryAction(Intent secondaryAction) {
-		this.secondaryAction = secondaryAction;
-	}
-	
-	public void setPreference(SuperPreference preference) {
-		this.preference = preference;
-	}
-	
-	public SuperPreference getPreference() {
-		return preference;
-	}
-	
-	public Intent getMainAction() {
-		return mainAction;
-	}
-	
-	private Intent getSecondaryAction() {
-		return secondaryAction;
-	}
-	
-	private String getHashPhrase() {
-		return getMainAction().getExtras().getString("hashPhrase");
-	}
-	
-	protected Bundle compileSuperIntentData(Context context) {
-		Bundle data = new Bundle();
-		data.putString("hashPhrase", getHashPhrase());
-		data.putParcelable("mainAction", getMainAction());
-		data.putParcelable("secondaryAction", getSecondaryAction());
-		data.putParcelable("preference", getPreference());
-		data.putString("launchedPkg", context.getPackageName());
-		return data;
-	}
-	
-	private boolean noSecondaryPreference(SuperPreference preference) {
-		return preference.getSecondaryPkg().equals("none");
-	}
-	
 	
 	public void launch(Context context) {
-		AdManager adManager = new AdManager(context);
-		PreferenceManager prefManager = new PreferenceManager(context);
-		if(prefManager.superTagIsInstalled()) {
-			Intent iLaunchST = new Intent("SUPER_TAG_LAUNCHED");
-			iLaunchST.putExtras(compileSuperIntentData(context));
-			PendingIntent superTagPI = PendingIntent.getBroadcast(context, (int) System.currentTimeMillis(), iLaunchST, 0);
-			try {
-				superTagPI.send();
-			} catch (CanceledException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-				try {
-					context.startActivity(getMainAction());
-				} catch(ActivityNotFoundException e) {
-					SuperPreference preference = getPreference();
-					FragmentActivity act = (FragmentActivity) context;
-					DialogFragment nID = NotInstalledDialog.newInstance(preference.getPrimaryName(), 
-							preference.getPrimaryPkg());
-					nID.show(act.getSupportFragmentManager(), "not_installed_dialog");
-				}
-		}
+		performLaunch(context, null);
 	}
 
 	@Override
@@ -106,14 +96,8 @@ public class SuperIntent implements Parcelable {
 	}
 
 	@Override
-	public void writeToParcel(Parcel out, int arg1) {
-		out.writeParcelable(getMainAction(), 0);
-		out.writeParcelable(getPreference(), 0);
-		Intent secondaryAction = getSecondaryAction();
-		if(secondaryAction != null) {
-			out.writeParcelable(secondaryAction, 0);
-		}
-		
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeList(getIntentsList());
 	}
 	
 	public static Creator<SuperIntent> CREATOR = new Creator<SuperIntent>() {
@@ -125,10 +109,11 @@ public class SuperIntent implements Parcelable {
 
 		@Override
 		public SuperIntent[] newArray(int size) {
-			// TODO Auto-generated method stub
 			return new SuperIntent[size];
 		}
 		
 	};
+	
+	
 
 }

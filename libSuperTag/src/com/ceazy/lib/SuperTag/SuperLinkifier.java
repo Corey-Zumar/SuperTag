@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.widget.TextView;
 
 public class SuperLinkifier {
@@ -18,11 +19,20 @@ public class SuperLinkifier {
 		pParser = pCreator.createParserPattern();
 	}
 	
-	public void Linkify(TextView textView) {
+	public void Linkify(TextView textView, int[] parameters, String URL) {
 		String text = textView.getText().toString();
 		String updatedText = replaceData(text);
 		textView.setText(updatedText);
-		String URL = "supertag://";
+		if(URL == null) {
+			URL = "supertag://";
+		}
+		for(int parameter : parameters) {
+			try {
+			Linkify.addLinks(textView, parameter);
+			} catch (Exception e) {
+				Log.d("Invalid parameter: " ,String.valueOf(parameter));
+			}
+		}
 		Linkify.addLinks(textView, getPattern("parser"), URL);
 	}
 	

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="googleSearch">
+        <item>http://www.google.com/#q=, BROWSER</item>
+    </string-array>
+    
+    <string-array name="twitterSearch">
+        <item>twitter://search?query=</item>
+        <item>https://mobile.twitter.com/search?q=, BROWSER</item>
+    </string-array>
+    
+    <string-array name="location">
+        <item>http://maps.google.com/?q=, BROWSER</item>
+    </string-array>
+    
+    <string-array name="food">
+        <item>http://www.yelp.com/search?find_desc=, BROWSER</item>
+    </string-array>
+    
+    <string-array name="videoMedia">
+        <item>http://m.youtube.com/results?q=, BROWSER</item>
+    </string-array>
+    
+    <string-array name="musicMedia">
+        <item>spotify:search:</item>
+        <item>http://m.youtube.com/results?q=, BROWSER</item>
+    </string-array>
+    
+    <string-array name="application">
+        <item>https://play.google.com/store/search?q=, BROWSER</item>
+    </string-array>
+    
+    <string-array name="movieMedia">
+        <item>imdb:///find?q=</item>
+        <item>http://www.rottentomatoes.com/mobile/search/?q=</item>
+        <item>http://m.imdb.com/find?q=, BROWSER</item>
+    </string-array>
+    
+    <string-array name="newsMedia">
+        <item>http://america.aljazeera.com/search.html?q=test</item>
+        <item>https://www.google.com/search?tbm=nws\u0026q=, BROWSER, INCLUDE</item>
+    </string-array>
+    
+    <string-array name="stocks">
+        <item>http://www.google.com/finance?q=, BROWSER</item>
+    </string-array>
+    
+    <string-array name="shopping">
+        <item>http://www.amazon.com/gp/aw/s/?k=, BROWSER</item>
+    </string-array>
+    
+</resources>

@@ -9,10 +9,14 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -29,17 +33,33 @@ import android.widget.AdapterView.OnItemClickListener;
 class DialogCreator {
 	
 	Context context;
+	Messenger messenger;
 	
 	protected DialogCreator(Context context) {
-		setContext(context);
+		this.context = context;
 	}
 	
-	private void setContext(Context context) {
-		this.context = context;
+	protected void setKillMessenger(Messenger messenger) {
+		this.messenger = messenger;
 	}
 
 	private Context getContext() {
 		return context;
+	}
+	
+	private Messenger getMessenger() {
+		return messenger;
+	}
+	
+	private void killActivity() {
+		if(getMessenger() != null) {
+			try {
+				getMessenger().send(Message.obtain());
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private LayoutInflater getLayoutInflater() {
@@ -128,7 +148,14 @@ class DialogCreator {
 		ContextThemeWrapper dialogThemeWrapper = new ContextThemeWrapper(getContext(), DialogFragment.STYLE_NO_TITLE);
 		AlertDialog.Builder builder = new AlertDialog.Builder(dialogThemeWrapper)
 		.setView(dialogView)
-		.setNegativeButton(negButtonText, null);
+		.setNegativeButton(negButtonText, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				killActivity();
+			}
+			
+		});
 		if(download) {
 			builder.setPositiveButton("Download", new OnClickListener() {
 
@@ -136,6 +163,7 @@ class DialogCreator {
 				public void onClick(DialogInterface arg0, int arg1) {
 					try {
 						getContext().startActivity(downloadIntent);
+						killActivity();
 					} catch(ActivityNotFoundException e) {
 						createPlayStoreNotInstalledDialog();
 					}

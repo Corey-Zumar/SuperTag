@@ -7,7 +7,7 @@
         android:id="@+id/vMsgTitle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FF4444" />
+        android:background="#33B5E5" />
 
     <TextView
         android:id="@+id/tvMsgTitleText"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/vMsgTitle"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:text=""

@@ -9,19 +9,28 @@ package com.ceazy.lib.SuperTag;
 
 public final class R {
     public static final class array {
-        public static int classes=0x7f050003;
-        public static int default_preferences=0x7f050004;
+        public static int application=0x7f05000a;
         public static int directionAbbrevs=0x7f050001;
-        public static int hashTags=0x7f050005;
-        public static int ignoredSmilies=0x7f050007;
-        public static int ignored_tags_array=0x7f050006;
+        public static int food=0x7f050007;
+        public static int googleSearch=0x7f050004;
+        public static int hashTags=0x7f050003;
+        public static int location=0x7f050006;
         public static int locationAbbrevs=0x7f050000;
         public static int miscAbbrevs=0x7f050002;
+        public static int movieMedia=0x7f05000b;
+        public static int musicMedia=0x7f050009;
+        public static int newsMedia=0x7f05000c;
+        public static int shopping=0x7f05000e;
+        public static int stocks=0x7f05000d;
+        public static int twitterSearch=0x7f050005;
+        public static int videoMedia=0x7f050008;
     }
     public static final class attr {
     }
     public static final class drawable {
-        public static int ic_launcher=0x7f020000;
+        public static int ic_action_like=0x7f020000;
+        public static int ic_launcher=0x7f020001;
+        public static int sample_movie_poster=0x7f020002;
     }
     public static final class id {
         public static int ivIcon=0x7f080000;
@@ -43,7 +52,13 @@ public final class R {
         public static int bariol_regular=0x7f040000;
     }
     public static final class string {
-        public static int app_name=0x7f060000;
+        public static int GoogleAPIKey=0x7f060000;
+        public static int RottenTomatoesAPIKey=0x7f060001;
+        public static int YelpConsumerKey=0x7f060002;
+        public static int YelpConsumerSecretKey=0x7f060003;
+        public static int YelpSecretToken=0x7f060005;
+        public static int YelpToken=0x7f060004;
+        public static int app_name=0x7f060006;
     }
     public static final class style {
         /** 

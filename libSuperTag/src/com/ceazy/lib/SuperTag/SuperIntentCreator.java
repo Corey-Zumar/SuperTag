@@ -1,126 +1,180 @@
 package com.ceazy.lib.SuperTag;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.android.youtube.player.YouTubeIntents;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 
 public class SuperIntentCreator {
 	
 	Context context;
-	PreferenceManager preferenceManager;
 	
 	public SuperIntentCreator(Context context) {
 		this.context = context;
-		this.preferenceManager = new PreferenceManager(context);
 	}
 	
 	private Context getContext() {
 		return context;
 	}
 	
-	private PreferenceManager getPreferenceManager() {
-		return preferenceManager;
-	}
-	
 	public SuperTag updateTagWithIntents(SuperTag tag) {
-		String function = tag.getFunction();
-		Intent rawIntent = createIntentForTagData(tag.getHashTag(), tag.getHashPhrase(), function);
-		SuperIntent superIntent = new SuperIntent(rawIntent, getPreferenceManager().getPackagePreferences(function));
+		List<Intent> intentsList = getIntentsForFunction(tag.getFunction(), 
+				tag.getHashPhrase());
+		SuperIntent superIntent = new SuperIntent(intentsList);
 		tag.setIntent(superIntent);
 		return tag;
 	}
 	
-	public SuperIntent createGenericSuperIntent(String hashTag, String hashPhrase) {
-		Intent intent = createGenericSearchIntent(hashTag, hashPhrase);
-		SuperPreference preference = getPreferenceManager().getPackagePreferences("genericSearch");
-		return new SuperIntent(intent, preference);
-	}
-	
-	public SuperIntent createLocationSuperIntent(String hashPhrase) {
-		Intent intent = createMapSearchIntent(hashPhrase);
-		SuperPreference preference = getPreferenceManager().getPackagePreferences("location");
-		return new SuperIntent(intent, preference);
-	}
-	
-	public SuperIntent createSuperIntentForTagData(String hashTag, String hashPhrase, String function) {
-		Intent intent = createIntentForTagData(hashTag, hashPhrase, function);
-		SuperPreference preference = getPreferenceManager().getPackagePreferences(function);
-		return new SuperIntent(intent, preference);
-	}
-	
-	protected Intent createIntentForTagData(String hashTag, String hashPhrase, String function) {
+	protected List<Intent> getIntentsForFunction(String function, String hashPhrase) {
 		if(function.equals("googleSearch")) {
-			return createGenericSearchIntent(hashTag, hashPhrase);
+			return createGoogleSearchIntents(hashPhrase);
+		} else if(function.equals("twitterSearch")) {
+			return createTwitterSearchIntents(hashPhrase);
 		} else if(function.equals("location")) {
-			return createMapSearchIntent(hashPhrase);
-		} else {
-			PreferenceManager preferenceManager = new PreferenceManager(getContext());
-			SuperPreference preference = preferenceManager.getPackagePreferences(function);
-			return createAppSearchIntent(preference.getPrimaryPkg(), hashPhrase);
+			return createLocationIntents(hashPhrase);
+		} else if(function.equals("food")) {
+			return createFoodIntents(hashPhrase);
+		} else if(function.equals("videoMedia")) {
+			return createVideoIntents(hashPhrase);
+		} else if(function.equals("musicMedia")) {
+			return createMusicIntents(hashPhrase);
+		} else if(function.equals("movieMedia")) {
+			return createMovieIntents(hashPhrase);
+		} else if(function.equals("newsMedia")) {
+			return createNewsIntents(hashPhrase);
+		} else if(function.equals("shopping")) {
+			return createShoppingIntents(hashPhrase);
+		} else if(function.equals("stocks")) {
+			return createStocksIntents(hashPhrase);
+		} else if(function.equals("application")) {
+			return createApplicationIntents(hashPhrase);
 		}
+		return new ArrayList<Intent>();
 	}
 	
-	protected Intent createGenericSearchIntent(String hashTag, String hashPhrase) {
-		Intent action = null;
-		if(hashPhrase.contains(" ") || !hashTag.equals("#")) {
-			Uri uri = Uri.parse("http://www.google.com/#q="+hashPhrase);
-			action = createIntent(Intent.ACTION_VIEW, uri, null, -1, hashPhrase, false);
-		} else {
-			action = createIntent(Intent.ACTION_SEARCH, null, "com.twitter.android", 
-				Intent.FLAG_ACTIVITY_NEW_TASK, hashPhrase, true);
-		}
-		return action;
+	protected List<Intent> createGoogleSearchIntents(String hashPhrase) {
+		return createIntentsFromUris("googleSearch", hashPhrase);
 	}
 	
-	protected Intent createMapSearchIntent(String hashPhrase) {
-
-		Uri uri = Uri.parse("geo:0,0?q="+hashPhrase);
-		Intent action = createIntent(Intent.ACTION_VIEW, uri, "com.google.android.apps.maps", -1, hashPhrase, false);
-		return action;
-		
+	protected List<Intent> createTwitterSearchIntents(String hashPhrase) {
+		return createIntentsFromUris("twitterSearch", hashPhrase);
 	}
 	
-	protected Intent createAppSearchIntent(String packageName, String hashPhrase) {
-		
-		Intent action = createIntent(Intent.ACTION_SEARCH, null, packageName, Intent.FLAG_ACTIVITY_NEW_TASK, hashPhrase, true);
-		return action;
+	protected List<Intent> createLocationIntents(String hashPhrase) {
+		return createIntentsFromUris("location", hashPhrase);
 	}
-
-	private Intent createIntent(String action, Uri uri, String pkgName, int flags, String hashPhrase, boolean putSearchQuery) {
-		Intent intent;
-		if(uri != null) {
-			intent = new Intent(Intent.ACTION_VIEW, uri);
-		} else {
-			intent = new Intent(action);
+	
+	protected List<Intent> createFoodIntents(String hashPhrase) {
+		return createIntentsFromUris("food", hashPhrase);
+	}
+	
+	protected List<Intent> createVideoIntents(String hashPhrase) {
+		List<Intent> intentsList = createIntentsFromUris("videoMedia", hashPhrase);
+		intentsList.add(YouTubeIntents.createSearchIntent(getContext(), hashPhrase));
+		return intentsList;
+	}
+	
+	protected List<Intent> createMusicIntents(String hashPhrase) {
+		List<Intent> intentsList =  createIntentsFromUris("musicMedia", hashPhrase);
+		intentsList.add(YouTubeIntents.createSearchIntent(getContext(), hashPhrase));
+		Intent iGooglePlayMusic = createIntent(Intent.ACTION_SEARCH, "com.google.android.music", 
+				null, 0, hashPhrase);
+		intentsList.add(iGooglePlayMusic);
+		return intentsList;
+	}
+	
+	protected List<Intent> createApplicationIntents(String hashPhrase) {
+		return createIntentsFromUris("application", hashPhrase);
+	}
+	
+	protected List<Intent> createMovieIntents(String hashPhrase) {
+		List<Intent> intentsList = createIntentsFromUris("movieMedia", hashPhrase);
+		Intent iFandango = createIntent(Intent.ACTION_SEARCH, "com.fandango",
+				"com.fandango.activities.SearchListActivity", 0, hashPhrase);
+		intentsList.add(iFandango);
+		return intentsList;
+	}
+	
+	protected List<Intent> createNewsIntents(String hashPhrase) {
+		List<Intent> intentsList =  createIntentsFromUris("newsMedia", hashPhrase);
+		Intent iHuffingtonPost = createIntent(Intent.ACTION_SEARCH, "com.huffingtonpost.android",
+				"com.huffingtonpost.android.section.SectionActivity", 0, hashPhrase);
+		intentsList.add(iHuffingtonPost);
+		Intent iNPR = createIntent(Intent.ACTION_SEARCH, "org.npr.android.news", 
+				"org.npr.android.news.SearchResultsActivity", 0, hashPhrase);
+		intentsList.add(iNPR);
+		return intentsList;
+	}
+	
+	protected List<Intent> createStocksIntents(String hashPhrase) {
+		return createIntentsFromUris("stocks", hashPhrase);
+	}
+	
+	protected List<Intent> createShoppingIntents(String hashPhrase) {
+		List<Intent> intentsList = createIntentsFromUris("shopping", hashPhrase);
+		Intent iAmazonMobile = createIntent(Intent.ACTION_SEARCH,
+				"com.amazon.mShop.android", "com.amazon.mShop.search.SearchActivity",
+				0, hashPhrase);
+		intentsList.add(iAmazonMobile);
+		return intentsList;
+	}
+	
+	protected Intent createIntent(String action, String pkgName, String className,
+			int flags, String hashPhrase) {
+		Intent intent = new Intent(action);
+		intent.setPackage(pkgName);
+		if(className != null) {
+			intent.setClassName(pkgName, className);
 		}
-		if(pkgName != null) {
-			intent.setPackage(pkgName);
-			intent = setClasses(intent, pkgName);
-		}
-		if(flags != -1) {
-			intent.setFlags(flags);
-		}
-		if(putSearchQuery) {
-			intent.putExtra(SearchManager.QUERY, hashPhrase);
-		}
-		Bundle data = new Bundle();
-		data.putString("hashPhrase", hashPhrase);
-		intent.putExtras(data);
-		
+		intent.putExtra(SearchManager.QUERY, hashPhrase);
+		intent.setFlags(flags);
 		return intent;
 	}
-
-	protected Intent setClasses(Intent intent, String pkgName) {
-		String[] classes = getContext().getResources().getStringArray(R.array.classes);
-		for(String classInfo : classes) {
-			int commaIndex = classInfo.indexOf(",");
-			if(classInfo.substring(0, commaIndex).equals(pkgName)) {
-				intent = intent.setClassName(pkgName, classInfo.substring(commaIndex + 1, classInfo.length()).trim());
-				break;
+	
+	protected List<Intent> createIntentsFromUris(String function, String hashPhrase) {
+		List<Intent> intentsList = new ArrayList<Intent>();
+		int id = getContext().getResources()
+				.getIdentifier(function, "array", getContext().getPackageName());
+		for(String uriInfo : getContext().getResources().getStringArray(id)) {
+			try {
+				String uriString;
+				String type = null;
+				String include = null;
+				if(uriInfo.contains(",")) {
+					int commaIndex = uriInfo.indexOf(",");
+					uriString = uriInfo.substring(0, commaIndex);
+					String typeInfo = uriInfo.substring(commaIndex + 1);
+					if(typeInfo.contains(",")) {
+						int commaIndex2 = typeInfo.indexOf(",");
+						type = typeInfo.substring(0, commaIndex2);
+						include = typeInfo.substring(commaIndex2 + 1);
+					} else {
+						type = typeInfo;
+					}
+				} else {
+					uriString = uriInfo;
+				}
+				Intent intent = new Intent(Intent.ACTION_VIEW,
+						Uri.parse(uriString + URLEncoder.encode(hashPhrase, "UTF-8")));
+				if(type != null) {
+					intent.putExtra("type", type);
+					if(include != null) {
+						intent.putExtra("include", include);
+					}
+				}
+				intentsList.add(intent);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
 			}
 		}
-		return intent;
+		return intentsList;
 	}
+
 }

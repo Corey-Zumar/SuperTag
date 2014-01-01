@@ -4,10 +4,6 @@
         <item>#google, googleSearch</item>
         <item>#search, googleSearch</item>
         
-        <item>#call, phoneCall</item>
-        <item>#dial, phoneCall</item>
-        <item>#phone, phoneCall</item>
-        
         <item>#map, location</item>
         <item>#maps, location</item>
         <item>#address, location</item>
@@ -20,6 +16,7 @@
         <item>#eat, food</item>
         <item>#cafe, food</item>
         <item>#food, food</item>
+        <item>#yelp, food</item>
         
         <item>#vid, videoMedia</item>
         <item>#video, videoMedia</item>

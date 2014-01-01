@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="GoogleAPIKey">AIzaSyAg_3U0M5BbGyIMjxy3wk0A4-HBv84o5YI</string>
+    <string name="RottenTomatoesAPIKey">ptaqp7pv65anrv7gz68k9sec</string>
+    <string name="YelpConsumerKey">PGkY9aMIC9mHiazwjZ6oQw</string>
+    <string name="YelpConsumerSecretKey">dVcBrHdy2mNDI05t4lfk9TYV3j8</string>
+    <string name="YelpToken">uyKSBswImHuXK9RGPukh7QsJAGAxUg5h</string>
+    <string name="YelpSecretToken">HWfwlH9UEMxYreJLkAiQtAL6SQY</string>
+</resources>

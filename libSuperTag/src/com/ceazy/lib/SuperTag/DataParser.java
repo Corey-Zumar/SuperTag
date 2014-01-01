@@ -24,7 +24,7 @@ public class DataParser {
 	
 	protected String getFunctionForHashTag(String hashTag, List<String> hashTags, List<String> functions) {
 		for(String tag : hashTags) {
-			if(tag.equals(hashTag)) {
+			if(tag.equalsIgnoreCase(hashTag)) {
 				return functions.get(hashTags.indexOf(tag)).trim();
 			}
 		}
