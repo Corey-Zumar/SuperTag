@@ -96,6 +96,8 @@ public class JSONFetcher {
 			getFoodJSON();
 		} else if(function.equals("videoMedia")) {
 			getVideoJSON();
+		} else if(function.equals("stocks")) {
+			getStocksJSON();
 		}
 	}
 	
@@ -297,6 +299,10 @@ public class JSONFetcher {
 		builder.append("/search?part=snippet&q=" + getSearchPhrase());
 		builder.append("&type=video&key=" + getKeyForId(R.string.GoogleAPIKey));
 		fetchJSON(getMessenger(), builder.toString(), "videoMedia", returnObject());
+	}
+	//STOCKS
+	private void getStocksJSON() {
+		
 	}
 	
 

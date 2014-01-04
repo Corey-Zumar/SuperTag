@@ -32,6 +32,46 @@ public class SuperIntentCreator {
 		return tag;
 	}
 	
+	public SuperIntent createGoogleSearchIntent(String hashPhrase) {
+		return new SuperIntent(getIntentsForFunction("googleSearch", hashPhrase));
+	}
+	
+	public SuperIntent createTwitterSearchIntent(String hashPhrase) {
+		return new SuperIntent(getIntentsForFunction("twitterSearch", hashPhrase));
+	}
+	
+	public SuperIntent createLocationIntent(String hashPhrase) {
+		return new SuperIntent(getIntentsForFunction("location", hashPhrase));
+	}
+	
+	public SuperIntent createFoodIntent(String hashPhrase) {
+		return new SuperIntent(getIntentsForFunction("food", hashPhrase));
+	}
+	
+	public SuperIntent createVideoIntent(String hashPhrase) {
+		return new SuperIntent(getIntentsForFunction("videoMedia", hashPhrase));
+	}
+	
+	public SuperIntent createMusicIntent(String hashPhrase) {
+		return new SuperIntent(getIntentsForFunction("musicMedia", hashPhrase));
+	}
+	
+	public SuperIntent createNewsIntent(String hashPhrase) {
+		return new SuperIntent(getIntentsForFunction("newsMedia", hashPhrase));
+	}
+	
+	public SuperIntent createShoppingIntent(String hashPhrase) {
+		return new SuperIntent(getIntentsForFunction("shopping", hashPhrase));
+	}
+	
+	public SuperIntent createStocksIntent(String hashPhrase) {
+		return new SuperIntent(getIntentsForFunction("stocks", hashPhrase));
+	}
+	
+	public SuperIntent createApplicationSearchIntent(String hashPhrase) {
+		return new SuperIntent(getIntentsForFunction("application", hashPhrase));
+	}
+	
 	protected List<Intent> getIntentsForFunction(String function, String hashPhrase) {
 		if(function.equals("googleSearch")) {
 			return createGoogleSearchIntents(hashPhrase);
@@ -123,6 +163,9 @@ public class SuperIntentCreator {
 				"com.amazon.mShop.android", "com.amazon.mShop.search.SearchActivity",
 				0, hashPhrase);
 		intentsList.add(iAmazonMobile);
+		Intent iEbay = createIntent(Intent.ACTION_SEARCH, "com.ebay.mobile",
+				"com.ebay.mobile.activities.QuickSearchHandler", 0, hashPhrase);
+		intentsList.add(iEbay);
 		return intentsList;
 	}
 	

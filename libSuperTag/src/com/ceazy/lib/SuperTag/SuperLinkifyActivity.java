@@ -1,17 +1,10 @@
 package com.ceazy.lib.SuperTag;
 
-import java.util.List;
-
-import com.ceazy.lib.SuperTag.Location.SuperLocation;
-import com.ceazy.lib.SuperTag.Movie.SuperMovie;
-import com.ceazy.lib.SuperTag.News.SuperArticle;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 public class SuperLinkifyActivity extends FragmentActivity {
 
@@ -22,7 +15,9 @@ public class SuperLinkifyActivity extends FragmentActivity {
 		String data = getIntent().getData().toString();
 		String phrase = data.substring(data.indexOf("#"));
 		parsePhraseAndLaunch(phrase);
-
+		SuperTag tag = new SuperTag("herpes", "dur", "videoMedia");
+		
+		tag.setIntent(null);
 	}
 
 	protected void setTheme() {
@@ -34,20 +29,27 @@ public class SuperLinkifyActivity extends FragmentActivity {
 	protected void parsePhraseAndLaunch(String phrase) {
 		SuperTextAnalyzer analyzer = new SuperTextAnalyzer(this);
 		SuperTag launchTag = analyzer.getSingleTag(phrase);
-		SuperIntentCreator creator = new SuperIntentCreator(this);
-		launchTag = creator.updateTagWithIntents(launchTag);
-		launchTag.getIntent().performLaunch(this, new Messenger(new DestroyHandler()));
-		Handler testHandler = new Handler() {
+		launchTag.getIntent(this).launch(this, new Messenger(new DestroyHandler()));
+		/*Handler testHandler = new Handler() {
 
 			@Override
 			public void handleMessage(Message msg) {
 				String key = msg.getData().getString("key");
-				
+				//Log.d("RESULT", msg.getData().getString("result"));
+				if(key.equals("food")) {
+					List<SuperRestaurant> restaurantList = msg.getData()
+							.getParcelableArrayList("result");
+					for(SuperRestaurant restaurant : restaurantList) {
+						Log.d(restaurant.getName(), 
+								restaurant.getAddressInfo()[0]);
+					}
+					
+				}
 				super.handleMessage(msg);
 			}
 			
 		};
-		launchTag.getJSON(this, new Messenger(testHandler), true);
+		launchTag.getJSON(this, new Messenger(testHandler), true);*/
 	}
 	
 	class DestroyHandler extends Handler {

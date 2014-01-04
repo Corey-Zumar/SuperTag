@@ -3,37 +3,50 @@ package com.ceazy.lib.SuperTag;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.RemoteException;
 
+/** A compilation of multiple {@link android.content.Intent intent's}
+ * associated with a {@link SuperTag SuperTag's} {@link SuperTag#hashPhrase hashphrase} and 
+ * {@link SuperTag#function function} that can be launched. 
+ * <br></br>
+ * A SuperIntent is typically created using a {@link SuperIntentCreator}
+ */
 public class SuperIntent implements Parcelable {
 	
 	List<Intent> intentsList;
 	
+	/** {@link SuperIntent} class constructor
+	 * 
+	 * @param intentsList A list of intents that can be used to search for a {@link SuperTag
+	 * SuperTag's} content
+	 */
 	public SuperIntent(List<Intent> intentsList) {
 		this.intentsList = intentsList;
 	}
 	
 	protected SuperIntent(Parcel in) {
-		this.intentsList = in.readArrayList((new ArrayList<Intent>())
-				.getClass().getClassLoader());
+		this.intentsList = in.createTypedArrayList(Intent.CREATOR);
 	}
 	
 	private List<Intent> getIntentsList() {
 		return intentsList;
 	}
 	
-	protected void performLaunch(Context context, Messenger destroyMessenger) {
+	protected void performLaunch(Context context, Messenger messenger) {
 		List<Intent> intentsList = getIntentsList();
 		int size = intentsList.size();
 		if(size == 0) {
-			//Do nothing...
+			if(messenger != null) {
+				sendMessage(messenger, "Error: No intents have been defined");
+			}
 		} else {
 			List<Intent> newIntents = new ArrayList<Intent>();
 			List<String> includedPkgs = new ArrayList<String>();
@@ -72,35 +85,61 @@ public class SuperIntent implements Parcelable {
 			for(int i = 1; i < newIntents.size(); i++) {
 				intents[i-1] = newIntents.get(i);
 			}
-			Intent chooserIntent = Intent.createChooser(newIntents.get(0), "Choose an option...");
+			Intent chooserIntent = Intent.createChooser(newIntents.get(0), 
+					"Select an option");
 			chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents);
 			try {
 				context.startActivity(chooserIntent);
 			} catch(ActivityNotFoundException e) {
-				//No apps installed error!
+				sendMessage(messenger, "Error: No activity found to handle intent" +
+						" (user must at least have a compatible browser installed)");
+			} catch(Exception e) {
+				sendMessage(messenger, "Error: An unexpected error occurred while launching"
+						+ " intent");
 			}
-			if(destroyMessenger != null) {
-				((Activity) context).finish();
+			if(messenger != null) {
+				sendMessage(messenger, "Intent launched successfully");
 			}
 		}
 	}
 	
-	public void launch(Context context) {
-		performLaunch(context, null);
+	private void sendMessage(Messenger messenger, String msgObj) {
+		if(messenger != null) {
+			Message msg = Message.obtain();
+			msg.obj = msgObj;
+			try {
+				messenger.send(msg);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**<b><i> public void launch({@link android.content.Context Context} context,
+	 * {@link android.os.Messenger Messenger} messenger)</i></b>
+	 * <p> Launches the SuperIntent. If the list of intents with which the SuperIntent
+	 * was constructed contains multiple intents, a {@link android.content.Intent#createChooser(Intent, CharSequence)
+	 * chooser}
+	 * intent will be created.
+	 * @param context
+	 * @param messenger A {@link android.os.Messenger messenger} through which information about
+	 * the progress of the launch process can be sent (may be null).
+	 */
+	public void launch(Context context, Messenger messenger) {
+		performLaunch(context, messenger);
 	}
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
-		out.writeList(getIntentsList());
+		out.writeTypedList(getIntentsList());
 	}
 	
-	public static Creator<SuperIntent> CREATOR = new Creator<SuperIntent>() {
+	Creator<SuperIntent> CREATOR = new Creator<SuperIntent>() {
 
 		@Override
 		public SuperIntent createFromParcel(Parcel in) {

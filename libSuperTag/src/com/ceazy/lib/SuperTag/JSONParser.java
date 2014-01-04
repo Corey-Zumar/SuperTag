@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.ceazy.lib.SuperTag.Food.SuperRestaurant;
 import com.ceazy.lib.SuperTag.Location.SuperLocation;
 import com.ceazy.lib.SuperTag.Movie.SuperMovie;
 import com.ceazy.lib.SuperTag.News.SuperArticle;
+import com.ceazy.lib.SuperTag.Stocks.SuperStock;
+import com.ceazy.lib.SuperTag.Video.SuperVideo;
 
 import android.content.Context;
+import android.util.Log;
 
-public class JSONParser {
+public class JSONParser { //TO DO: USE GSON. Note: isNull may be useful for checking
 	
 	private Context context;
 	
@@ -29,6 +34,12 @@ public class JSONParser {
 			return parseNewsJSON(jsonString);
 		} else if(key.equals("movieMedia")) {
 			return parseMovieJSON(jsonString);
+		} else if(key.equals("videoMedia")) {
+			return parseVideoJSON(jsonString);
+		} else if(key.equals("food")) {
+			return parseFoodJSON(jsonString);
+		} else if(key.equals("stocks")) {
+			return parseStocksJSON(jsonString);
 		}
 		return null;
 	}
@@ -123,6 +134,98 @@ public class JSONParser {
 			e.printStackTrace();
 		}
 		return articleList;
+	}
+	
+	protected ArrayList<SuperVideo> parseVideoJSON(String input) {
+		ArrayList<SuperVideo> videoList = new ArrayList<SuperVideo>();
+		try {
+			JSONArray videos = new JSONObject(input).getJSONArray("items");
+			for(int i = 0; i < videos.length(); i++) {
+				JSONObject video = videos.getJSONObject(i);
+				JSONObject id = video.getJSONObject("id");
+				if(id.getString("kind").equals("youtube#video")) {
+					String videoId = id.getString("videoId");
+					JSONObject snippet = video.getJSONObject("snippet");
+					String date = snippet.getString("publishedAt");
+					String channelId = snippet.getString("channelId");
+					String title = snippet.getString("title");
+					String description = snippet.getString("description");
+					JSONObject thumbnails = snippet.getJSONObject("thumbnails");
+					String thumbnailURL = thumbnails.getJSONObject("medium")
+							.getString("url");
+					String channelTitle = snippet.getString("channelTitle");
+					SuperVideo superVideo = new SuperVideo(title, date);
+					superVideo.setVideoURL(videoId);
+					superVideo.setChannelURL(channelId);
+					superVideo.setDescription(description);
+					superVideo.setThumbnailURL(thumbnailURL);
+					superVideo.setChannelTitle(channelTitle);
+					videoList.add(superVideo);
+				}
+			}
+		} catch(JSONException e) {
+			e.printStackTrace();
+		}
+		return videoList;
+	}
+	
+	public ArrayList<SuperRestaurant> parseFoodJSON(String input) {
+		ArrayList<SuperRestaurant> restaurantList = new ArrayList<SuperRestaurant>();
+		try {
+			JSONArray restaurants = new JSONObject(input).getJSONArray("businesses");
+			for(int i = 0; i < restaurants.length(); i++) {
+				JSONObject business = restaurants.getJSONObject(i);
+				String name = business.getString("name");
+				long rating = business.getLong("rating");
+				String url = business.getString("mobile_url");
+				String photoURL = null;
+				if(!business.isNull("image_url")) {
+					photoURL = business.getString("image_url");
+				}
+				String internationalNumber = business.getString("phone");
+				String phoneNumber = business.getString("display_phone");
+				long distance = business.getLong("distance");
+				boolean isClosed = business.getBoolean("is_closed");
+				JSONArray addressInfoArray = business.getJSONObject("location")
+						.getJSONArray("display_address");
+				int length = addressInfoArray.length();
+				String[] addressInfo = new String[length];
+				for(int x = 0; x < length; x++) {
+					addressInfo[x] = addressInfoArray.getString(x);
+				}
+				JSONArray categoriesArray = business.getJSONArray("categories");
+				int categoriesLength = categoriesArray.length();
+				String[] categories = new String[categoriesLength];
+				for(int y = 0; y < categoriesLength; y++) {
+					JSONArray categoryArray = categoriesArray.getJSONArray(y);
+					categories[y] = categoryArray.getString(0);
+				}
+				SuperRestaurant superRestaurant = new SuperRestaurant(name);
+				superRestaurant.setRating(rating);
+				superRestaurant.setURL(url);
+				superRestaurant.setPhotoURL(photoURL);
+				superRestaurant.setInternationalPhoneNumber(internationalNumber);
+				superRestaurant.setPhoneNumber(phoneNumber);
+				superRestaurant.setDistance(distance);
+				superRestaurant.setClosedStatus(isClosed);
+				superRestaurant.setAddressInfo(addressInfo);
+				superRestaurant.setCategories(categories);
+				restaurantList.add(superRestaurant);
+			}
+		} catch(JSONException e) {
+			e.printStackTrace();
+		}
+		return restaurantList;
+	}
+	
+	public ArrayList<SuperStock> parseStocksJSON(String input) {
+		ArrayList<SuperStock> stocksList = new ArrayList<SuperStock>();
+		try {
+			JSONArray stocks = new JSONObject(input).getJSONArray("SOMESHIT");
+		} catch(JSONException e) {
+			e.printStackTrace();
+		}
+		return stocksList;
 	}
 	
 	
