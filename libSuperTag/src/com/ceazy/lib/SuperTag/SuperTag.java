@@ -1,6 +1,8 @@
 package com.ceazy.lib.SuperTag;
 
+
 import android.content.Context;
+import android.content.Intent;
 import android.os.Messenger;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,8 +17,8 @@ public class SuperTag implements Parcelable {
 	private String hashPhrase;
 	/** A recognized hashtag (#location, #video, etc)*/
 	private String hashTag;
-	/** The function associated with the {@link SuperTag#hashTag hashtag}  
-	 * (location, videoMedia, etc)*/
+	/** The function associated with the {@link SuperTag#hashTag hashtag} in a {@link SuperTag} 
+	 * (location, videoMedia, etc). Please see hashtags.xml for a list of hashtags and their corresponding functions*/
 	private String function;
 	private int startIndex, endIndex;
 	private SuperIntent superIntent;
@@ -139,19 +141,21 @@ public class SuperTag implements Parcelable {
 	}
 	
 	/** <b><i> public {@link SuperIntent} getIntent({@link android.content.Context Context}
-	 * context) </i></b>
+	 * context, <code>Integer[]</code> flagsArray) </i></b>
 	 * <p> Retrieves the SuperIntent associated with the SuperTag. If it is null, 
 	 * a SuperIntent will be created based on the SuperTag's {@link SuperTag#hashPhrase hashPhrase}
 	 * and {@link SuperTag#function function} and returned.</p>
+	 * @param flagsArray Flags to be added to each {@link Intent} within the SuperIntent 
+	 * (Intent.FLAG_ACTIVITY_NEW_TASK, etc)
 	 * @return The {@link SuperIntent} associated with the SuperTag
 	 */
-	public SuperIntent getIntent(Context context) {
+	public SuperIntent getIntent(Context context, Integer[] flagsArray) {
 		if(getIntent() != null) {
 			return getIntent();
 		} else {
 			SuperIntentCreator intentCreator = new SuperIntentCreator(context);
 			setIntent(new SuperIntent(intentCreator.getIntentsForFunction(getFunction(), 
-					getHashPhrase())));
+					getHashPhrase(), (flagsArray == null ? new Integer[]{0} : flagsArray))));
 			return getIntent();
 		}
 		
@@ -173,9 +177,8 @@ public class SuperTag implements Parcelable {
 	 * a custom data object. If false, it will be left in string form.
 	 */
 	public void getJSON(Context context, Messenger messenger, boolean returnObj) {
-		
-		JSONFetcher fetcher = new JSONFetcher(context, messenger, getFunction(), 
-				getHashPhrase(), returnObj);
+		JSONFetcher fetcher = new JSONFetcher(context, messenger, getHashTag(),
+				getHashPhrase(), getFunction(), returnObj);
 		fetcher.retrieveJSONInfo();
 	}
 

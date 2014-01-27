@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="hashTags">
+        <item>#search, genericSearch</item>
+        <item>#information, genericSearch</item>
+        <item>#info, genericSearch</item>
+        
         <item>#google, googleSearch</item>
-        <item>#search, googleSearch</item>
+        <item>#web, googleSearch</item>
+        <item>#webinfo, googleSearch</item>
+        
+        <item>#twitter, twitterSearch</item>
+        <item>#trend, twitterSearch</item>
+        <item>#hashtag, twitterSearch</item>
         
         <item>#map, location</item>
         <item>#maps, location</item>
@@ -12,11 +21,15 @@
 		<item>#to, location</item>
         <item>#place, location</item>
         
-        <item>#restaurant, food</item>
-        <item>#eat, food</item>
-        <item>#cafe, food</item>
-        <item>#food, food</item>
-        <item>#yelp, food</item>
+        <item>#restaurant, dining</item>
+        <item>#eat, dining</item>
+        <item>#cafe, dining</item>
+        <item>#dining, dining</item>
+        <item>#yelp, dining</item>
+        <item>#dine, dining</item>
+        <item>#food, dining</item>
+        <item>#dining, dining</item>
+        <item>#diner, dining</item>
         
         <item>#vid, videoMedia</item>
         <item>#video, videoMedia</item>
@@ -24,8 +37,13 @@
         <item>#music, musicMedia</item>
         <item>#song, musicMedia</item>
         <item>#artist, musicMedia</item>
+        <item>#musician, musicMedia</item>
+        <item>#band, musicMedia</item>
+        <item>#singer, musicMedia</item>
         <item>#track, musicMedia</item>
         <item>#album, musicMedia</item>
+        <item>#record, musicMedia</item>
+        <item>#cd, musicMedia</item>
         
         <item>#app, application</item>
         <item>#application, application</item>

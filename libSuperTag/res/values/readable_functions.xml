@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="readable_genericSearch">
+        <item>Information</item>
+    </string-array>
+    
+    <string-array name="readable_googleSearch">
+        <item>Google Search</item>
+        <item>Google</item>
+        <item>Information</item>
+        <item>Google Information</item>
+        <item>Web Information</item>
+        <item>Online Information</item>
+    </string-array>
+    
+    <string-array name="readable_twitterSearch">
+        <item>Twitter Topic</item>
+        <item>Twitter Topics</item>
+        <item>Trend</item>
+        <item>Trends</item>
+        <item>Twitter Trend</item>
+        <item>Twitter Trends</item>
+        <item>Twitter Hashtag</item>
+        <item>Twitter Hashtags</item>
+        <item>Hashtag</item>
+        <item>Hashtags</item>
+        <item>Twitter</item>
+    </string-array>
+    
+    <string-array name="readable_location">
+        <item>Location</item>
+        <item>Locations</item>
+        <item>Place</item>
+        <item>Places</item>
+    </string-array>
+    
+    <string-array name="readable_dining">
+        <item>Dining</item>
+        <item>Restaurant</item>
+        <item>Restaurants</item>
+        <item>Cafe</item>
+        <item>Cafes</item>
+        <item>Eatery</item>
+        <item>Eateries</item>
+    </string-array>
+    
+    <string-array name="readable_videoMedia">
+        <item>Video</item>
+        <item>Videos</item>
+        <item>YouTube Video</item>
+        <item>YouTube Videos</item>
+        <item>Online Video</item>
+        <item>Online Videos</item>
+    </string-array>
+    
+    <string-array name="readable_musicMedia">
+        <item>Music</item>
+        <item>Piece of Music</item>
+    </string-array>
+    
+    <string-array name="readable_application">
+        <item>Application</item>
+        <item>Applications</item>
+        <item>Android Application</item>
+        <item>Android Applications</item>
+        <item>Mobile Application</item>
+        <item>Mobile Applications</item>
+    </string-array>
+    
+    <string-array name="readable_movieMedia">
+        <item>Movie</item>
+        <item>Movies</item>
+        <item>Film</item>
+        <item>Films</item>
+        <item>Cinema</item>
+        <item>Picture</item>
+        <item>Motion Picture</item>
+        <item>Motion Pictures</item>
+        <item>Flick</item>
+        <item>Flicks</item>
+    </string-array>
+    
+    <string-array name="readable_newsMedia">
+        <item>News</item>
+        <item>Story</item>
+        <item>Stories</item>
+        <item>Article</item>
+        <item>Articles</item>
+        <item>News Story</item>
+        <item>News Stories</item>
+        <item>News Article</item>
+        <item>News Articles</item>
+        <item>News Item</item>
+        <item>News Items</item>
+        <item>Breaking News</item>
+        <item>Recent News</item>
+    </string-array>
+    
+    <string-array name="readable_stocks">
+        <item>Stocks</item>
+        <item>Stock</item>
+        <item>Stock Information</item>
+        <item>Financial Information</item>
+        <item>Market Information</item>
+    </string-array>
+    
+    <string-array name="readable_shopping">
+        <item>Shopping</item>
+        <item>Product</item>
+        <item>Products</item>
+        <item>Retail Item</item>
+        <item>Retail Items</item>
+        <item>Online Product</item>
+        <item>Online Products</item>
+    </string-array>
+    
+</resources>

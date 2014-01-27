@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 import android.content.Context;
 
+/**<b>class SuperTextAnalyzer</b>
+ * Analyzes and parses strings of text for SuperTags that they may contain
+ */
 public class SuperTextAnalyzer {
 	
 	Context context;
@@ -15,6 +19,8 @@ public class SuperTextAnalyzer {
 	PatternCreator pCreator;
 	DataParser dataParser;
 	
+	/**<b>SuperTextAnalyzer class constructor</b>
+	 */
 	public SuperTextAnalyzer(Context context) {
 		setContext(context);
 		initialize();
@@ -30,23 +36,26 @@ public class SuperTextAnalyzer {
 	
 	private void initialize() {
 		dataParser = new DataParser(getContext());
-		hashTags = dataParser.getHashTags();
-		functions = dataParser.getFunctions();
 		pCreator = new PatternCreator(getContext());
 		pLocation = pCreator.createLocationPattern();
 		pMisc = pCreator.createMiscPattern();
 		pParser = pCreator.createParserPattern();
 	}
 	
-	public boolean containsHashTag(String msgBody) {
-		return msgBody.contains("#");
+	/**<b><i>public boolean containsHashTag(<code>String</code> text)</i></b>
+	 * <p>Determines whether or not a string of text contains a hashtag. If a 
+	 * string contains a hashtag, it contains at least one {@link SuperTag}
+	 * @param text A string of text
+	 */
+	public boolean containsHashTag(String text) {
+		return text.contains("#");
 	}
 	
-	private List<SuperTag> getTags(String msgBody, boolean single) {
-		String originalMsgBody = msgBody;
+	private List<SuperTag> getTags(String text, boolean single) {
+		String originalMsgBody = text;
 		List<SuperTag> tagsList = new ArrayList<SuperTag>();
-		msgBody = replaceData(new Pattern[]{pLocation, pMisc}, msgBody);
-		Matcher parseMatcher = pParser.matcher(msgBody);
+		text = replaceData(new Pattern[]{pLocation, pMisc}, text);
+		Matcher parseMatcher = pParser.matcher(text);
 		while(parseMatcher.find()) {
 			String group = parseMatcher.group(0);
 			String hashTag = null;
@@ -55,8 +64,9 @@ public class SuperTextAnalyzer {
 			int hashIndex = group.indexOf("#");
 			if(group.contains(" ")) {
 				hashTag = group.substring(hashIndex, group.indexOf(" ")).trim();
-				function = dataParser.getFunctionForHashTag(hashTag, hashTags, functions);
-				if(function.equals("googleSearch")) {
+				function = dataParser.getFunctionForHashTag(hashTag);
+				if(function.equals("genericSearch") && 
+						!dataParser.getHashTags().contains(hashTag)) {
 					hashPhrase = group.substring(group.indexOf(hashTag) + 1).trim();
 				} else {
 					hashPhrase = group.substring(group.indexOf(hashTag) + hashTag.length() + 1).trim();
@@ -64,12 +74,7 @@ public class SuperTextAnalyzer {
 			} else {
 				hashTag = "#";
 				hashPhrase = group.substring(hashIndex + 1).trim();
-				if(hashPhrase.contains(" ")) {
-					function = "googleSearch";
-				} else {
-					hashPhrase = "#" + hashPhrase;
-					function = "twitterSearch";
-				}
+				function = "genericSearch";
 			}
 			SuperTag newTag = new SuperTag(hashTag, hashPhrase, function);
 			int startIndex = originalMsgBody.indexOf(group);
@@ -83,12 +88,29 @@ public class SuperTextAnalyzer {
 		return tagsList;
 	}
 	
-	public List<SuperTag> getAllTags(String msgBody) {
-		return getTags(msgBody, false);
+	/**<b><i>public <code>List</code><{@link SuperTag}> getAllTags(<code>String</code>
+	 * text)</i></b>
+	 * <p>Finds and compiles all {@link SuperTag SuperTags} in a string of text
+	 * @param text A string of text
+	 * @return A list of {@link SuperTag} objects
+	 */
+	public List<SuperTag> getAllTags(String text) {
+		return getTags(text, false);
 	}
 	
-	public SuperTag getSingleTag(String phrase) {
-		return getTags(phrase, true).get(0);
+	/**<b><i>public <code>List</code><{@link SuperTag}> getAllTags(<code>String</code>
+	 * text)</i></b>
+	 * <p>Finds the first {@link SuperTag} in a string of text. To be used when
+	 * it can be assumed that a string only contains one SuperTag
+	 * @param text A string of text
+	 * @return A {@link SuperTag} object
+	 */
+	public SuperTag getFirstTag(String text) {
+		try {
+			return getTags(text, true).get(0);
+		} catch(IndexOutOfBoundsException e) {
+			return null;
+		}
 	}
 	
 	private String replaceData(Pattern[] patterns, String text) {

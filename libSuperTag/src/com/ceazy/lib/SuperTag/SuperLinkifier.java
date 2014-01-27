@@ -3,15 +3,28 @@ package com.ceazy.lib.SuperTag;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 import android.content.Context;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.widget.TextView;
 
+/**<b>class SuperLinkifier</b>
+ * <p>Uses Android's {@link android.text.util.Linkify linkify} utility to identify 
+ * and create hyperlinks for all {@link SuperTag SuperTags} in a string</p>
+ * <p>The SuperLinkifier is an alternative to manually parsing strings using
+ * the {@link SuperTextAnalyzer}.</p>
+ * 
+ *
+ */
 public class SuperLinkifier {
 	
 	private Pattern pLocation, pMisc, pParser;
 	
+	/**<b>SuperLinkifier class constructor</b>
+	 * 
+	 * @param context
+	 */
 	public SuperLinkifier(Context context) {
 		PatternCreator pCreator = new PatternCreator(context);
 		pLocation = pCreator.createLocationPattern();
@@ -19,21 +32,33 @@ public class SuperLinkifier {
 		pParser = pCreator.createParserPattern();
 	}
 	
-	public void Linkify(TextView textView, int[] parameters, String URL) {
+	/**<b><i>public void Linkify({@link android.widget.TextView TextView} textView,
+	 * <code>int[]</code> linkifyParams, <code>String</code> scheme)</i></b>
+	 * <p>Creates hyperlinks for all instances of SuperTags within strings 
+	 * displayed through TextViews.
+	 * @param textView The TextView to which the Linkify utility should be applied
+	 * @param linkifyParams Other Linkify bit fields and masks for which hyperlinks
+	 * should be created (Linkify.EMAIL_ADDRESSES, Linkify.ALL, etc), may be null
+	 * @param scheme The URL scheme for all SuperTag hyperlinks that are created
+	 * (defaults to "supertag://" if null)
+	 */
+	public void Linkify(TextView textView, int[] linkifyParams, String scheme) {
 		String text = textView.getText().toString();
 		String updatedText = replaceData(text);
 		textView.setText(updatedText);
-		if(URL == null) {
-			URL = "supertag://";
+		if(scheme == null) {
+			scheme = "supertag://";
 		}
-		for(int parameter : parameters) {
-			try {
-			Linkify.addLinks(textView, parameter);
-			} catch (Exception e) {
-				Log.d("Invalid parameter: " ,String.valueOf(parameter));
+		if(linkifyParams != null ) {
+			for(int parameter : linkifyParams) {
+				try {
+					Linkify.addLinks(textView, parameter);
+				} catch (Exception e) {
+					Log.d("Invalid parameter: " ,String.valueOf(parameter));
+				}
 			}
 		}
-		Linkify.addLinks(textView, getPattern("parser"), URL);
+		Linkify.addLinks(textView, getPattern("parser"), scheme);
 	}
 	
 	private String replaceData(String text) {

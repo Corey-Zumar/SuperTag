@@ -3,61 +3,74 @@ package com.ceazy.lib.SuperTag.News;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
+/**<b>class SuperArticle</b>
+ * <p>A data class containing information about a news article obtained via a {@link SuperArticleList} and the 
+ * {@link com.ceazy.lib.SuperTag.SuperTag#getJSON getJSON} method within a "newsMedia" {@link com.ceazy.lib.SuperTag.SuperTag
+ * SuperTag}</p>
+ * <p>SuperArticle data is obtained using the Feedzilla News API
+ * @see <a href="https://code.google.com/p/feedzilla-api/wiki/RestApi">Feedzilla News API</a>
+ */
 public class SuperArticle implements Parcelable {
 	
-	String title, date, sourceURL, summary, author;
+	String title, summary, author;
+	@SerializedName("publish_date")
+	String date;
+	@SerializedName("source_url")
+	String sourceURL;
 	
-	public SuperArticle(String title, String date) {
-		setTitle(title);
-		setDate(date);
+	/**<b>{@link SuperArticle} class constructor</b>*/
+	public SuperArticle() {
+		
 	}
 	
 	protected SuperArticle(Parcel in) {
-		setTitle(in.readString());
-		setDate(in.readString());
-		setAuthor(in.readString());
-		setSourceURL(in.readString());
-		setSummary(in.readString());
+		this.title = in.readString();
+		this.summary = in.readString();
+		this.author = in.readString();
+		this.date = in.readString();
+		this.sourceURL = in.readString();
 	}
 	
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	public void setDate(String date) {
-		this.date = date;
-	}
-	
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-	
-	public void setSourceURL(String sourceURL) {
-		this.sourceURL = sourceURL;
-	}
-	
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-	
+	/**<b><i>public <code>String</code> getTitle()</i></b>
+	 * <br></br>
+	 * @return The title of the article
+	 */
 	public String getTitle() {
 		return title;
 	}
 	
-	public String getDate() {
-		return date;
+	/**<b><i>public <code>String</code> getSummary()</i></b>
+	 * <br></br>
+	 * @return A brief summary of the article
+	 */
+	public String getSummary() {
+		return summary;
 	}
 	
+	/**<b><i>public <code>String</code> getAuthor()</i></b>
+	 * <br></br>
+	 * @return The author of the article
+	 */
 	public String getAuthor() {
 		return author;
 	}
 	
-	public String getSourceURL() {
-		return sourceURL;
+	/**<b><i>public <code>String</code> getDate()</i></b>
+	 * <br></br>
+	 * @return The date the article was published
+	 */
+	public String getDate() {
+		return date;
 	}
 	
-	public String getSummary() {
-		return summary;
+	/**<b><i>public <code>String</code> getFeedURL()</i></b>
+	 * <br></br>
+	 * @return A URL associated with the RSS feed from which the article was obtained
+	 */
+	public String getFeedURL() {
+		return sourceURL;
 	}
 
 	@Override
@@ -67,14 +80,14 @@ public class SuperArticle implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
-		out.writeString(getTitle());
-		out.writeString(getDate());
-		out.writeString(getAuthor());
-		out.writeString(getSourceURL());
-		out.writeString(getSummary());
+		out.writeString(title);
+		out.writeString(summary);
+		out.writeString(author);
+		out.writeString(date);
+		out.writeString(sourceURL);
 	}
 	
-	Creator<SuperArticle> CREATOR = new Creator<SuperArticle>() {
+	public static final Creator<SuperArticle> CREATOR = new Creator<SuperArticle>() {
 
 		@Override
 		public SuperArticle createFromParcel(Parcel in) {

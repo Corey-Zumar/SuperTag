@@ -9,21 +9,34 @@ package com.ceazy.lib.SuperTag;
 
 public final class R {
     public static final class array {
-        public static int application=0x7f05000a;
+        public static int application=0x7f050017;
+        public static int dining=0x7f050014;
         public static int directionAbbrevs=0x7f050001;
-        public static int food=0x7f050007;
-        public static int googleSearch=0x7f050004;
+        public static int googleSearch=0x7f050011;
         public static int hashTags=0x7f050003;
-        public static int location=0x7f050006;
+        public static int location=0x7f050013;
         public static int locationAbbrevs=0x7f050000;
         public static int miscAbbrevs=0x7f050002;
-        public static int movieMedia=0x7f05000b;
-        public static int musicMedia=0x7f050009;
-        public static int newsMedia=0x7f05000c;
-        public static int shopping=0x7f05000e;
-        public static int stocks=0x7f05000d;
-        public static int twitterSearch=0x7f050005;
-        public static int videoMedia=0x7f050008;
+        public static int movieMedia=0x7f050018;
+        public static int musicMedia=0x7f050016;
+        public static int musicMediaSubtags=0x7f050010;
+        public static int newsMedia=0x7f050019;
+        public static int readable_application=0x7f05000b;
+        public static int readable_dining=0x7f050008;
+        public static int readable_genericSearch=0x7f050004;
+        public static int readable_googleSearch=0x7f050005;
+        public static int readable_location=0x7f050007;
+        public static int readable_movieMedia=0x7f05000c;
+        public static int readable_musicMedia=0x7f05000a;
+        public static int readable_newsMedia=0x7f05000d;
+        public static int readable_shopping=0x7f05000f;
+        public static int readable_stocks=0x7f05000e;
+        public static int readable_twitterSearch=0x7f050006;
+        public static int readable_videoMedia=0x7f050009;
+        public static int shopping=0x7f05001b;
+        public static int stocks=0x7f05001a;
+        public static int twitterSearch=0x7f050012;
+        public static int videoMedia=0x7f050015;
     }
     public static final class attr {
     }

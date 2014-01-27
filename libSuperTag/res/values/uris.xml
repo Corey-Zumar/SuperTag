@@ -13,7 +13,7 @@
         <item>http://maps.google.com/?q=, BROWSER</item>
     </string-array>
     
-    <string-array name="food">
+    <string-array name="dining">
         <item>http://www.yelp.com/search?find_desc=, BROWSER</item>
     </string-array>
     

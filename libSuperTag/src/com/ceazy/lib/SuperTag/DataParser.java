@@ -1,38 +1,54 @@
 package com.ceazy.lib.SuperTag;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.ceazy.lib.SuperTag.R;
 
 import android.content.Context;
 import android.content.res.Resources;
 
-public class DataParser {
+class DataParser {
 	
 	Resources resources;
+	Context context;
+	Map<String, String> tagsAndFunctionsMap;
 	
 	protected DataParser(Context context) {
-		setResources(context.getResources());
+		this.context = context;
+		createTagsAndFunctionsMap();
 	}
 	
-	private void setResources(Resources resources) {
-		this.resources = resources;
+	private Context getContext() {
+		return context;
 	}
 	
-	private Resources getResources() {
-		return resources;
+	protected void createTagsAndFunctionsMap() {
+		tagsAndFunctionsMap = new LinkedHashMap<String, String>();
+		for(String tagAndFunction : getTagsAndFunctionsArray()) {
+			tagsAndFunctionsMap.put(getHashTag(tagAndFunction), getFunction(
+					tagAndFunction));
+		}
 	}
 	
-	protected String getFunctionForHashTag(String hashTag, List<String> hashTags, List<String> functions) {
-		for(String tag : hashTags) {
+	protected Map<String, String> getTagsAndFunctionsMap() {
+		return tagsAndFunctionsMap;
+	}
+	
+	protected String getFunctionForHashTag(String hashTag) {
+		Map<String, String> tagsAndFuncs = getTagsAndFunctionsMap();
+		for(String tag : tagsAndFuncs.keySet()) {
 			if(tag.equalsIgnoreCase(hashTag)) {
-				return functions.get(hashTags.indexOf(tag)).trim();
+				return tagsAndFuncs.get(tag);
 			}
 		}
-		return "googleSearch";
+		return "genericSearch";
 	}
 	
 	protected String[] getTagsAndFunctionsArray() {
-		return getResources().getStringArray(R.array.hashTags);
+		return getContext().getResources().getStringArray(R.array.hashTags);
 	}
 	
 	protected String getHashTag(String hashTagAndFunction) {
@@ -46,17 +62,15 @@ public class DataParser {
 	}
 	
 	protected List<String> getHashTags() {
-		List<String> hashTags = new ArrayList<String>();
-		for(String hashTagAndFunction : getTagsAndFunctionsArray()) {
-			hashTags.add(getHashTag(hashTagAndFunction));
-		}
-		return hashTags;
+		return new ArrayList<String>(getTagsAndFunctionsMap().keySet());
 	}
 	
 	protected List<String> getFunctions() {
 		List<String> functions = new ArrayList<String>();
-		for(String hashTagAndFunction : getTagsAndFunctionsArray()) {
-			functions.add(getFunction(hashTagAndFunction));
+		for(String function : getTagsAndFunctionsMap().values()) {
+			if(!functions.contains(function)) {
+				functions.add(function);
+			}
 		}
 		return functions;
 	}
@@ -69,5 +83,17 @@ public class DataParser {
 			}
 		}
 		return hashTags;
+	}
+	
+	protected String getMusicSubFunction(String subTag) {
+		for(String subTagAndFunction : getContext().getResources()
+				.getStringArray(R.array.musicMediaSubtags)) {
+			int commaIndex = subTagAndFunction.indexOf(",");
+			String subTagToCompare = subTagAndFunction.substring(0, commaIndex);
+			if(subTagToCompare.equals(subTag)) {
+				return subTagAndFunction.substring(commaIndex + 1).trim();
+			}
+		}
+		return "track";
 	}
 }

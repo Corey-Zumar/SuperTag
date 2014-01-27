@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="musicMediaSubtags">
+        <item>#music, musicMediaTrack</item>
+        <item>#song, musicMediaTrack</item>
+        <item>#track, musicMediaTrack</item>
+        <item>#artist, musicMediaArtist</item>
+        <item>#musician, musicMediaArtist</item>
+        <item>#singer, musicMediaArtist</item>
+        <item>#band, musicMediaArtist</item>
+        <item>#album, musicMediaAlbum</item>
+        <item>#record, musicMediaAlbum</item>
+        <item>#cd, musicMediaAlbum</item>
+    </string-array>
+</resources>

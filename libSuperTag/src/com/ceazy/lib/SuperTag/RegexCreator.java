@@ -1,5 +1,7 @@
 package com.ceazy.lib.SuperTag;
 
+import com.ceazy.lib.SuperTag.R;
+
 import android.content.Context;
 import android.content.res.Resources;
 
