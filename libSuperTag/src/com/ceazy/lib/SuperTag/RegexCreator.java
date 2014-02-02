@@ -3,23 +3,17 @@ package com.ceazy.lib.SuperTag;
 import com.ceazy.lib.SuperTag.R;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 class RegexCreator {
 	
 	Context context;
-	Resources resources;
 	
 	protected RegexCreator(Context context) {
-		setResources(context);
+		this.context = context;
 	}
 	
-	private void setResources(Context context) {
-		this.resources = context.getResources();
-	}
-	
-	private Resources getResources() {
-		return resources;
+	private Context getContext() {
+		return context;
 	}
 	
 	private String createRegexFromArrays(String[][] params) {
@@ -36,13 +30,13 @@ class RegexCreator {
 	}
 	
 	protected String getMiscRegex() {
-		String[] miscAbbrevs = getResources().getStringArray(R.array.miscAbbrevs);
+		String[] miscAbbrevs = getContext().getResources().getStringArray(R.array.miscAbbrevs);
 		return createRegexFromArrays(new String[][]{miscAbbrevs});
 	}
 	
 	protected String getLocationRegex() {
-		String[] directionAbbrevs = getResources().getStringArray(R.array.directionAbbrevs);
-		String[] locationAbbrevs = getResources().getStringArray(R.array.locationAbbrevs);
+		String[] directionAbbrevs = getContext().getResources().getStringArray(R.array.directionAbbrevs);
+		String[] locationAbbrevs = getContext().getResources().getStringArray(R.array.locationAbbrevs);
 		return createRegexFromArrays(new String[][]{directionAbbrevs, locationAbbrevs});
 	}
 

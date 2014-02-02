@@ -1,5 +1,9 @@
 package com.ceazy.lib.SuperTag;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,8 +30,30 @@ public class SuperLinkifyActivity extends FragmentActivity {
 
 		@Override
 		public void handleMessage(Message msg) {
-			finish();
-			super.handleMessage(msg);
+			if(msg.getData().getParcelable("error") != null) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(SuperLinkifyActivity.this)
+				.setTitle("Oops!")
+				.setMessage("Something went wrong!")
+				.setOnCancelListener(new OnCancelListener() {
+
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						finish();
+					}
+					
+				})
+				.setNeutralButton("Ok", new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+					
+				});
+				builder.create().show();
+			} else {
+				finish();
+			}
 		}
 		
 	}
